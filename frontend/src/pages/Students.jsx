@@ -1,8 +1,10 @@
 
 import { useEffect, useState } from "react";
 
-const STUDENTS_API = "http://localhost:5000/api/students";
-const CLASSES_API = "http://localhost:5000/api/classes";
+const API_BASE_URL = "https://student-backend-hxpt.onrender.com";
+
+const STUDENTS_API = `${API_BASE_URL}/api/students`;
+const CLASSES_API = `${API_BASE_URL}/api/classes`;
 
 function Students() {
   const [students, setStudents] = useState([]);
@@ -62,14 +64,8 @@ function Students() {
   const saveStudent = async (event) => {
     event.preventDefault();
 
-    if (
-      !form.name ||
-      !form.roll_number ||
-      !form.class_id
-    ) {
-      setMessage(
-        "Name, roll number and class are required."
-      );
+    if (!form.name || !form.roll_number || !form.class_id) {
+      setMessage("Name, roll number and class are required.");
       return;
     }
 
@@ -95,10 +91,7 @@ function Students() {
       const result = await response.json();
 
       if (!response.ok) {
-        setMessage(
-          result.message ||
-            "Failed to save student."
-        );
+        setMessage(result.message || "Failed to save student.");
         return;
       }
 
@@ -129,9 +122,7 @@ function Students() {
     setForm({
       name: student.name || "",
       roll_number: student.roll_number || "",
-      class_id: String(
-        student.class_id || ""
-      ),
+      class_id: String(student.class_id || ""),
     });
 
     setMessage("");
@@ -162,26 +153,18 @@ function Students() {
     if (!confirmDelete) return;
 
     try {
-      const response = await fetch(
-        `${STUDENTS_API}/${id}`,
-        {
-          method: "DELETE",
-        }
-      );
+      const response = await fetch(`${STUDENTS_API}/${id}`, {
+        method: "DELETE",
+      });
 
       const result = await response.json();
 
       if (!response.ok) {
-        setMessage(
-          result.message ||
-            "Failed to delete student."
-        );
+        setMessage(result.message || "Failed to delete student.");
         return;
       }
 
-      setMessage(
-        "Student deleted successfully."
-      );
+      setMessage("Student deleted successfully.");
 
       fetchStudents();
     } catch (error) {
@@ -214,16 +197,11 @@ function Students() {
           background: "white",
           padding: "25px",
           borderRadius: "14px",
-          boxShadow:
-            "0 4px 15px rgba(0,0,0,0.08)",
+          boxShadow: "0 4px 15px rgba(0,0,0,0.08)",
           marginBottom: "25px",
         }}
       >
-        <h2>
-          {editingId
-            ? "Edit Student"
-            : "Add Student"}
-        </h2>
+        <h2>{editingId ? "Edit Student" : "Add Student"}</h2>
 
         <form
           onSubmit={saveStudent}
@@ -258,27 +236,17 @@ function Students() {
             onChange={handleChange}
             style={inputStyle}
           >
-            <option value="">
-              Select Class
-            </option>
+            <option value="">Select Class</option>
 
             {classes.map((item) => (
-              <option
-                key={item.id}
-                value={item.id}
-              >
+              <option key={item.id} value={item.id}>
                 {item.name}
               </option>
             ))}
           </select>
 
-          <button
-            type="submit"
-            style={buttonStyle}
-          >
-            {editingId
-              ? "Update Student"
-              : "+ Add Student"}
+          <button type="submit" style={buttonStyle}>
+            {editingId ? "Update Student" : "+ Add Student"}
           </button>
 
           {editingId && (
@@ -296,9 +264,7 @@ function Students() {
           <p
             style={{
               marginTop: "15px",
-              color: message.includes(
-                "successfully"
-              )
+              color: message.includes("successfully")
                 ? "#166534"
                 : "#991b1b",
               fontWeight: "500",
@@ -314,8 +280,7 @@ function Students() {
           background: "white",
           padding: "25px",
           borderRadius: "14px",
-          boxShadow:
-            "0 4px 15px rgba(0,0,0,0.08)",
+          boxShadow: "0 4px 15px rgba(0,0,0,0.08)",
           overflowX: "auto",
         }}
       >
@@ -334,73 +299,39 @@ function Students() {
             }}
           >
             <thead>
-              <tr
-                style={{
-                  background: "#f3f4f6",
-                }}
-              >
-                <th style={cellStyle}>
-                  ID
-                </th>
-
-                <th style={cellStyle}>
-                  Name
-                </th>
-
-                <th style={cellStyle}>
-                  Roll Number
-                </th>
-
-                <th style={cellStyle}>
-                  Class
-                </th>
-
-                <th style={cellStyle}>
-                  Action
-                </th>
+              <tr style={{ background: "#f3f4f6" }}>
+                <th style={cellStyle}>ID</th>
+                <th style={cellStyle}>Name</th>
+                <th style={cellStyle}>Roll Number</th>
+                <th style={cellStyle}>Class</th>
+                <th style={cellStyle}>Action</th>
               </tr>
             </thead>
 
             <tbody>
               {students.map((student) => (
                 <tr key={student.id}>
-                  <td style={cellStyle}>
-                    {student.id}
-                  </td>
+                  <td style={cellStyle}>{student.id}</td>
+
+                  <td style={cellStyle}>{student.name}</td>
+
+                  <td style={cellStyle}>{student.roll_number}</td>
 
                   <td style={cellStyle}>
-                    {student.name}
-                  </td>
-
-                  <td style={cellStyle}>
-                    {student.roll_number}
-                  </td>
-
-                  <td style={cellStyle}>
-                    {student.class_name ||
-                      student.class_id ||
-                      "-"}
+                    {student.class_name || student.class_id || "-"}
                   </td>
 
                   <td style={cellStyle}>
                     <button
-                      onClick={() =>
-                        editStudent(student)
-                      }
+                      onClick={() => editStudent(student)}
                       style={editButtonStyle}
                     >
                       Edit
                     </button>
 
                     <button
-                      onClick={() =>
-                        deleteStudent(
-                          student.id
-                        )
-                      }
-                      style={
-                        deleteButtonStyle
-                      }
+                      onClick={() => deleteStudent(student.id)}
+                      style={deleteButtonStyle}
                     >
                       Delete
                     </button>
