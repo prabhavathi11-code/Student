@@ -1,7 +1,8 @@
 
 import { useEffect, useState } from "react";
 
-const API = "http://localhost:5000/api/classes";
+const API =
+  "https://student-backend-hxpt.onrender.com/api/classes";
 
 function Classes() {
   const [classes, setClasses] = useState([]);
@@ -16,12 +17,19 @@ function Classes() {
 
   const fetchClasses = async () => {
     try {
+      setLoading(true);
+
       const response = await fetch(API);
       const result = await response.json();
 
+      if (!response.ok) {
+        setMessage(result.message || "Failed to load classes.");
+        return;
+      }
+
       setClasses(result.data || []);
     } catch (error) {
-      console.error("Error:", error);
+      console.error("Fetch classes error:", error);
       setMessage("Unable to load classes.");
     } finally {
       setLoading(false);
@@ -37,15 +45,17 @@ function Classes() {
       ...form,
       [event.target.name]: event.target.value,
     });
+
+    setMessage("");
   };
 
   const addClass = async (event) => {
     event.preventDefault();
 
     if (
-      !form.name ||
-      !form.section ||
-      !form.academic_year
+      !form.name.trim() ||
+      !form.section.trim() ||
+      !form.academic_year.trim()
     ) {
       setMessage(
         "Class name, section and academic year are required."
@@ -59,10 +69,16 @@ function Classes() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(form),
+        body: JSON.stringify({
+          name: form.name.trim(),
+          section: form.section.trim(),
+          academic_year: form.academic_year.trim(),
+        }),
       });
 
       const result = await response.json();
+
+      console.log("Add class response:", result);
 
       if (!response.ok) {
         setMessage(
@@ -79,10 +95,12 @@ function Classes() {
         academic_year: "",
       });
 
-      fetchClasses();
+      await fetchClasses();
     } catch (error) {
-      console.error("Error:", error);
-      setMessage("Server error.");
+      console.error("Add class error:", error);
+      setMessage(
+        "Server error. Please check the backend."
+      );
     }
   };
 
@@ -91,7 +109,9 @@ function Classes() {
       "Are you sure you want to delete this class?"
     );
 
-    if (!confirmDelete) return;
+    if (!confirmDelete) {
+      return;
+    }
 
     try {
       const response = await fetch(`${API}/${id}`, {
@@ -109,9 +129,9 @@ function Classes() {
 
       setMessage("Class deleted successfully.");
 
-      fetchClasses();
+      await fetchClasses();
     } catch (error) {
-      console.error("Error:", error);
+      console.error("Delete class error:", error);
       setMessage("Server error.");
     }
   };
@@ -141,7 +161,8 @@ function Classes() {
           background: "white",
           padding: "25px",
           borderRadius: "14px",
-          boxShadow: "0 4px 15px rgba(0,0,0,0.08)",
+          boxShadow:
+            "0 4px 15px rgba(0,0,0,0.08)",
           marginBottom: "25px",
         }}
       >
@@ -183,7 +204,10 @@ function Classes() {
             style={inputStyle}
           />
 
-          <button type="submit" style={buttonStyle}>
+          <button
+            type="submit"
+            style={buttonStyle}
+          >
             + Add Class
           </button>
         </form>
@@ -192,7 +216,11 @@ function Classes() {
           <p
             style={{
               marginTop: "15px",
-              color: "#1e3a8a",
+              color: message.includes(
+                "successfully"
+              )
+                ? "#166534"
+                : "#991b1b",
               fontWeight: "500",
             }}
           >
@@ -207,7 +235,8 @@ function Classes() {
           background: "white",
           padding: "25px",
           borderRadius: "14px",
-          boxShadow: "0 4px 15px rgba(0,0,0,0.08)",
+          boxShadow:
+            "0 4px 15px rgba(0,0,0,0.08)",
           overflowX: "auto",
         }}
       >
@@ -226,12 +255,30 @@ function Classes() {
             }}
           >
             <thead>
-              <tr style={{ background: "#f3f4f6" }}>
-                <th style={cellStyle}>ID</th>
-                <th style={cellStyle}>Class Name</th>
-                <th style={cellStyle}>Section</th>
-                <th style={cellStyle}>Academic Year</th>
-                <th style={cellStyle}>Action</th>
+              <tr
+                style={{
+                  background: "#f3f4f6",
+                }}
+              >
+                <th style={cellStyle}>
+                  ID
+                </th>
+
+                <th style={cellStyle}>
+                  Class Name
+                </th>
+
+                <th style={cellStyle}>
+                  Section
+                </th>
+
+                <th style={cellStyle}>
+                  Academic Year
+                </th>
+
+                <th style={cellStyle}>
+                  Action
+                </th>
               </tr>
             </thead>
 
