@@ -1,7 +1,7 @@
 
 import { useEffect, useState } from "react";
 
-const API = "http://localhost:5000/api";
+const API = "https://student-backend-hxpt.onrender.com/api";
 
 function Dashboard() {
   const [counts, setCounts] = useState({
