@@ -1,0 +1,22 @@
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background: #f4f7fb;
+  color: #1f2937;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+main {
+  min-height: calc(100vh - 70px);
+}
+
