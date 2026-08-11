@@ -4,49 +4,35 @@ const router = express.Router();
 const db = require("../database/database");
 
 router.get("/", (req, res) => {
-  const sql = `
-    SELECT *
-    FROM teachers
-    ORDER BY id DESC
-  `;
+  db.all(
+    "SELECT * FROM teachers ORDER BY id DESC",
+    [],
+    (err, rows) => {
+      if (err) {
+        console.error("Get teachers error:", err.message);
 
-  db.all(sql, [], (err, rows) => {
-    if (err) {
-      console.error("Get teachers error:", err.message);
+        return res.status(500).json({
+          success: false,
+          message: err.message,
+        });
+      }
 
-      return res.status(500).json({
-        success: false,
-        message: err.message,
+      res.json({
+        success: true,
+        data: rows,
       });
     }
-
-    res.json({
-      success: true,
-      data: rows,
-    });
-  });
+  );
 });
 
-// ===============================
-// GET TEACHER BY ID
-// ===============================
 router.get("/:id", (req, res) => {
-  const id = Number(req.params.id);
-
-  if (!id) {
-    return res.status(400).json({
-      success: false,
-      message: "Invalid teacher ID",
-    });
-  }
+  const { id } = req.params;
 
   db.get(
     "SELECT * FROM teachers WHERE id = ?",
     [id],
     (err, row) => {
       if (err) {
-        console.error("Get teacher error:", err.message);
-
         return res.status(500).json({
           success: false,
           message: err.message,
@@ -68,16 +54,12 @@ router.get("/:id", (req, res) => {
   );
 });
 
-// ===============================
-// ADD TEACHER
-// ===============================
 router.post("/", (req, res) => {
   const {
     employee_id,
     name,
     email,
     phone,
-    subject,
   } = req.body;
 
   if (!employee_id || !name || !email || !phone) {
@@ -90,25 +72,16 @@ router.post("/", (req, res) => {
 
   const sql = `
     INSERT INTO teachers
-    (employee_id, name, email, phone, subject)
-    VALUES (?, ?, ?, ?, ?)
+    (employee_id, name, email, phone)
+    VALUES (?, ?, ?, ?)
   `;
 
   db.run(
     sql,
-    [
-      employee_id,
-      name,
-      email,
-      phone,
-      subject || "",
-    ],
+    [employee_id, name, email, phone],
     function (err) {
       if (err) {
-        console.error(
-          "Create teacher error:",
-          err.message
-        );
+        console.error("Create teacher error:", err.message);
 
         return res.status(500).json({
           success: false,
@@ -118,40 +91,28 @@ router.post("/", (req, res) => {
 
       res.status(201).json({
         success: true,
-        message: "Teacher added successfully",
+        message: "Teacher added successfully.",
         data: {
           id: this.lastID,
           employee_id,
           name,
           email,
           phone,
-          subject: subject || "",
         },
       });
     }
   );
 });
 
-// ===============================
-// UPDATE TEACHER
-// ===============================
 router.put("/:id", (req, res) => {
-  const id = Number(req.params.id);
+  const { id } = req.params;
 
   const {
     employee_id,
     name,
     email,
     phone,
-    subject,
   } = req.body;
-
-  if (!id) {
-    return res.status(400).json({
-      success: false,
-      message: "Invalid teacher ID",
-    });
-  }
 
   if (!employee_id || !name || !email || !phone) {
     return res.status(400).json({
@@ -167,27 +128,16 @@ router.put("/:id", (req, res) => {
       employee_id = ?,
       name = ?,
       email = ?,
-      phone = ?,
-      subject = ?
+      phone = ?
     WHERE id = ?
   `;
 
   db.run(
     sql,
-    [
-      employee_id,
-      name,
-      email,
-      phone,
-      subject || "",
-      id,
-    ],
+    [employee_id, name, email, phone, id],
     function (err) {
       if (err) {
-        console.error(
-          "Update teacher error:",
-          err.message
-        );
+        console.error("Update teacher error:", err.message);
 
         return res.status(500).json({
           success: false,
@@ -198,40 +148,27 @@ router.put("/:id", (req, res) => {
       if (this.changes === 0) {
         return res.status(404).json({
           success: false,
-          message: "Teacher not found",
+          message: "Teacher not found.",
         });
       }
 
       res.json({
         success: true,
-        message: "Teacher updated successfully",
+        message: "Teacher updated successfully.",
       });
     }
   );
 });
 
-// ===============================
-// DELETE TEACHER
-// ===============================
 router.delete("/:id", (req, res) => {
-  const id = Number(req.params.id);
-
-  if (!id) {
-    return res.status(400).json({
-      success: false,
-      message: "Invalid teacher ID",
-    });
-  }
+  const { id } = req.params;
 
   db.run(
     "DELETE FROM teachers WHERE id = ?",
     [id],
     function (err) {
       if (err) {
-        console.error(
-          "Delete teacher error:",
-          err.message
-        );
+        console.error("Delete teacher error:", err.message);
 
         return res.status(500).json({
           success: false,
@@ -242,16 +179,17 @@ router.delete("/:id", (req, res) => {
       if (this.changes === 0) {
         return res.status(404).json({
           success: false,
-          message: "Teacher not found",
+          message: "Teacher not found.",
         });
       }
 
       res.json({
         success: true,
-        message: "Teacher deleted successfully",
+        message: "Teacher deleted successfully.",
       });
     }
   );
 });
 
 module.exports = router;
+
