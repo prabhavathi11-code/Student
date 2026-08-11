@@ -1,6 +1,8 @@
+
 import { useEffect, useState } from "react";
 
-const API = "http://localhost:5000/api/teachers";
+const API =
+  "https://student-backend-hxpt.onrender.com/api/teachers";
 
 function Teachers() {
   const [teachers, setTeachers] = useState([]);
@@ -16,6 +18,8 @@ function Teachers() {
 
   const fetchTeachers = async () => {
     try {
+      setLoading(true);
+
       const response = await fetch(API);
       const result = await response.json();
 
@@ -37,6 +41,8 @@ function Teachers() {
       ...form,
       [event.target.name]: event.target.value,
     });
+
+    setMessage("");
   };
 
   const addTeacher = async (event) => {
@@ -137,7 +143,6 @@ function Teachers() {
         Manage school teachers.
       </p>
 
-      {/* Add Teacher */}
       <div
         style={{
           background: "white",
@@ -203,7 +208,9 @@ function Teachers() {
           <p
             style={{
               marginTop: "15px",
-              color: "#1e3a8a",
+              color: message.includes("successfully")
+                ? "#166534"
+                : "#991b1b",
               fontWeight: "500",
             }}
           >
@@ -212,7 +219,6 @@ function Teachers() {
         )}
       </div>
 
-      {/* Teacher List */}
       <div
         style={{
           background: "white",
@@ -325,3 +331,4 @@ const cellStyle = {
 };
 
 export default Teachers;
+
