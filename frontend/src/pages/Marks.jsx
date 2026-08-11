@@ -1,9 +1,11 @@
 
 import { useEffect, useState } from "react";
 
-const MARKS_API = "http://localhost:5000/api/marks";
-const EXAMS_API = "http://localhost:5000/api/exams";
-const STUDENTS_API = "http://localhost:5000/api/students";
+const BASE_API = "https://student-backend-hxpt.onrender.com/api";
+
+const MARKS_API = `${BASE_API}/marks`;
+const EXAMS_API = `${BASE_API}/exams`;
+const STUDENTS_API = `${BASE_API}/students`;
 
 function Marks() {
   const [marks, setMarks] = useState([]);
@@ -26,6 +28,10 @@ function Marks() {
       const response = await fetch(MARKS_API);
       const result = await response.json();
 
+      if (!response.ok) {
+        throw new Error(result.message || "Failed to load marks");
+      }
+
       setMarks(result.data || []);
     } catch (error) {
       console.error("Marks error:", error);
@@ -40,6 +46,10 @@ function Marks() {
       const response = await fetch(EXAMS_API);
       const result = await response.json();
 
+      if (!response.ok) {
+        throw new Error(result.message || "Failed to load exams");
+      }
+
       setExams(result.data || []);
     } catch (error) {
       console.error("Exams error:", error);
@@ -50,6 +60,10 @@ function Marks() {
     try {
       const response = await fetch(STUDENTS_API);
       const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.message || "Failed to load students");
+      }
 
       setStudents(result.data || []);
     } catch (error) {
@@ -130,7 +144,7 @@ function Marks() {
       if (!response.ok) {
         if (
           result.message &&
-          result.message.includes("UNIQUE constraint")
+          result.message.toLowerCase().includes("unique")
         ) {
           setMessage(
             "Marks already exist for this student and exam."
@@ -208,7 +222,6 @@ function Marks() {
         Manage student examination marks.
       </p>
 
-      {/* Enter Marks */}
       <div
         style={{
           background: "white",
@@ -292,7 +305,6 @@ function Marks() {
         )}
       </div>
 
-      {/* Marks Records */}
       <div
         style={{
           background: "white",
@@ -348,15 +360,15 @@ function Marks() {
                     </td>
 
                     <td style={cellStyle}>
-                      {item.exam_name}
+                      {item.exam_name || item.exam_id}
                     </td>
 
                     <td style={cellStyle}>
-                      {item.student_name}
+                      {item.student_name || item.student_id}
                     </td>
 
                     <td style={cellStyle}>
-                      {item.roll_number}
+                      {item.roll_number || "-"}
                     </td>
 
                     <td style={cellStyle}>
