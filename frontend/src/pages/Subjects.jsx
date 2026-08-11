@@ -1,8 +1,11 @@
 
 import { useEffect, useState } from "react";
 
-const API = "http://localhost:5000/api/subjects";
-const CLASSES_API = "http://localhost:5000/api/classes";
+const API =
+    "https://student-backend-hxpt.onrender.com/api/subjects";
+
+const CLASSES_API =
+    "https://student-backend-hxpt.onrender.com/api/classes";
 
 function Subjects() {
     const [subjects, setSubjects] = useState([]);
@@ -18,13 +21,17 @@ function Subjects() {
 
     const [editingId, setEditingId] = useState(null);
 
-    // ===============================
-    // FETCH SUBJECTS
-    // ===============================
     const fetchSubjects = async () => {
         try {
             const response = await fetch(API);
             const result = await response.json();
+
+            if (!response.ok) {
+                setMessage(
+                    result.message || "Unable to load subjects."
+                );
+                return;
+            }
 
             setSubjects(result.data || []);
         } catch (error) {
@@ -35,13 +42,18 @@ function Subjects() {
         }
     };
 
-    // ===============================
-    // FETCH CLASSES
-    // ===============================
     const fetchClasses = async () => {
         try {
             const response = await fetch(CLASSES_API);
             const result = await response.json();
+
+            if (!response.ok) {
+                console.error(
+                    "Classes error:",
+                    result.message
+                );
+                return;
+            }
 
             setClasses(result.data || []);
         } catch (error) {
@@ -54,9 +66,6 @@ function Subjects() {
         fetchClasses();
     }, []);
 
-    // ===============================
-    // HANDLE INPUT
-    // ===============================
     const handleChange = (event) => {
         setForm({
             ...form,
@@ -64,9 +73,6 @@ function Subjects() {
         });
     };
 
-    // ===============================
-    // ADD / UPDATE SUBJECT
-    // ===============================
     const saveSubject = async (event) => {
         event.preventDefault();
 
@@ -101,7 +107,7 @@ function Subjects() {
             if (!response.ok) {
                 setMessage(
                     result.message ||
-                    "Failed to save subject."
+                        "Failed to save subject."
                 );
                 return;
             }
@@ -127,9 +133,6 @@ function Subjects() {
         }
     };
 
-    // ===============================
-    // EDIT SUBJECT
-    // ===============================
     const editSubject = (subject) => {
         setEditingId(subject.id);
 
@@ -142,9 +145,6 @@ function Subjects() {
         setMessage("");
     };
 
-    // ===============================
-    // CANCEL EDIT
-    // ===============================
     const cancelEdit = () => {
         setEditingId(null);
 
@@ -157,9 +157,6 @@ function Subjects() {
         setMessage("");
     };
 
-    // ===============================
-    // DELETE SUBJECT
-    // ===============================
     const deleteSubject = async (id) => {
         const confirmDelete = window.confirm(
             "Are you sure you want to delete this subject?"
@@ -180,7 +177,7 @@ function Subjects() {
             if (!response.ok) {
                 setMessage(
                     result.message ||
-                    "Failed to delete subject."
+                        "Failed to delete subject."
                 );
                 return;
             }
@@ -215,7 +212,6 @@ function Subjects() {
                 Manage school subjects.
             </p>
 
-            {/* ADD / EDIT SUBJECT */}
             <div style={cardStyle}>
                 <h2>
                     {editingId
@@ -301,7 +297,6 @@ function Subjects() {
                 )}
             </div>
 
-            {/* SUBJECT LIST */}
             <div style={cardStyle}>
                 <h2>Subject List</h2>
 
@@ -313,16 +308,14 @@ function Subjects() {
                     <table
                         style={{
                             width: "100%",
-                            borderCollapse:
-                                "collapse",
+                            borderCollapse: "collapse",
                             marginTop: "20px",
                         }}
                     >
                         <thead>
                             <tr
                                 style={{
-                                    background:
-                                        "#f3f4f6",
+                                    background: "#f3f4f6",
                                 }}
                             >
                                 <th style={cellStyle}>
@@ -348,87 +341,55 @@ function Subjects() {
                         </thead>
 
                         <tbody>
-                            {subjects.map(
-                                (subject) => (
-                                    <tr
-                                        key={
-                                            subject.id
-                                        }
-                                    >
-                                        <td
+                            {subjects.map((subject) => (
+                                <tr key={subject.id}>
+                                    <td style={cellStyle}>
+                                        {subject.id}
+                                    </td>
+
+                                    <td style={cellStyle}>
+                                        {subject.name}
+                                    </td>
+
+                                    <td style={cellStyle}>
+                                        {subject.code}
+                                    </td>
+
+                                    <td style={cellStyle}>
+                                        {subject.class_name ||
+                                            subject.class_id ||
+                                            "-"}
+                                    </td>
+
+                                    <td style={cellStyle}>
+                                        <button
+                                            onClick={() =>
+                                                editSubject(
+                                                    subject
+                                                )
+                                            }
                                             style={
-                                                cellStyle
+                                                editButtonStyle
                                             }
                                         >
-                                            {
-                                                subject.id
-                                            }
-                                        </td>
+                                            Edit
+                                        </button>
 
-                                        <td
+                                        <button
+                                            onClick={() =>
+                                                deleteSubject(
+                                                    subject.id
+                                                )
+                                            }
                                             style={
-                                                cellStyle
+                                                deleteButtonStyle
                                             }
                                         >
-                                            {
-                                                subject.name
-                                            }
-                                        </td>
-
-                                        <td
-                                            style={
-                                                cellStyle
-                                            }
-                                        >
-                                            {
-                                                subject.code
-                                            }
-                                        </td>
-
-                                        <td
-                                            style={
-                                                cellStyle
-                                            }
-                                        >
-                                            {subject.class_name ||
-                                                subject.class_id ||
-                                                "-"}
-                                        </td>
-
-                                        <td
-                                            style={
-                                                cellStyle
-                                            }
-                                        >
-                                            <button
-                                                onClick={() =>
-                                                    editSubject(
-                                                        subject
-                                                    )
-                                                }
-                                                style={
-                                                    editButtonStyle
-                                                }
-                                            >
-                                                Edit
-                                            </button>
-
-                                            <button
-                                                onClick={() =>
-                                                    deleteSubject(
-                                                        subject.id
-                                                    )
-                                                }
-                                                style={
-                                                    deleteButtonStyle
-                                                }
-                                            >
-                                                Delete
-                                            </button>
-                                        </td>
-                                    </tr>
-                                )
-                            )}
+                                            Delete
+                                        </button>
+                                    </td>
+                                </tr>
+                            ))}
                         </tbody>
                     </table>
                 )}
@@ -436,10 +397,6 @@ function Subjects() {
         </div>
     );
 }
-
-// ===============================
-// STYLES
-// ===============================
 
 const cardStyle = {
     background: "white",
@@ -513,3 +470,4 @@ const cellStyle = {
 };
 
 export default Subjects;
+
