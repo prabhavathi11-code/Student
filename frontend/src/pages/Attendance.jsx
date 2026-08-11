@@ -1,8 +1,11 @@
 
 import { useEffect, useState } from "react";
 
-const ATTENDANCE_API = "http://localhost:5000/api/attendance";
-const STUDENTS_API = "http://localhost:5000/api/students";
+const ATTENDANCE_API =
+  "https://student-backend-hxpt.onrender.com/api/attendance";
+
+const STUDENTS_API =
+  "https://student-backend-hxpt.onrender.com/api/students";
 
 function Attendance() {
   const [attendance, setAttendance] = useState([]);
@@ -152,8 +155,7 @@ function Attendance() {
 
       if (!response.ok) {
         setMessage(
-          result.message ||
-            "Failed to delete attendance."
+          result.message || "Failed to delete attendance."
         );
         return;
       }
@@ -191,14 +193,12 @@ function Attendance() {
         Manage student attendance records.
       </p>
 
-      {/* Mark Attendance */}
       <div
         style={{
           background: "white",
           padding: "25px",
           borderRadius: "14px",
-          boxShadow:
-            "0 4px 15px rgba(0,0,0,0.08)",
+          boxShadow: "0 4px 15px rgba(0,0,0,0.08)",
           marginBottom: "25px",
         }}
       >
@@ -214,16 +214,13 @@ function Attendance() {
             flexWrap: "wrap",
           }}
         >
-          {/* Student */}
           <select
             name="student_id"
             value={form.student_id}
             onChange={handleStudentChange}
             style={inputStyle}
           >
-            <option value="">
-              Select Student
-            </option>
+            <option value="">Select Student</option>
 
             {students.map((student) => (
               <option
@@ -235,7 +232,6 @@ function Attendance() {
             ))}
           </select>
 
-          {/* Automatically selected class */}
           <input
             type="text"
             value={
@@ -265,13 +261,8 @@ function Attendance() {
             onChange={handleChange}
             style={inputStyle}
           >
-            <option value="present">
-              Present
-            </option>
-
-            <option value="absent">
-              Absent
-            </option>
+            <option value="present">Present</option>
+            <option value="absent">Absent</option>
           </select>
 
           <button
@@ -295,14 +286,12 @@ function Attendance() {
         )}
       </div>
 
-      {/* Attendance Records */}
       <div
         style={{
           background: "white",
           padding: "25px",
           borderRadius: "14px",
-          boxShadow:
-            "0 4px 15px rgba(0,0,0,0.08)",
+          boxShadow: "0 4px 15px rgba(0,0,0,0.08)",
           overflowX: "auto",
         }}
       >
@@ -328,24 +317,12 @@ function Attendance() {
                 }}
               >
                 <th style={cellStyle}>ID</th>
-                <th style={cellStyle}>
-                  Student
-                </th>
-                <th style={cellStyle}>
-                  Roll Number
-                </th>
-                <th style={cellStyle}>
-                  Class
-                </th>
-                <th style={cellStyle}>
-                  Date
-                </th>
-                <th style={cellStyle}>
-                  Status
-                </th>
-                <th style={cellStyle}>
-                  Action
-                </th>
+                <th style={cellStyle}>Student</th>
+                <th style={cellStyle}>Roll Number</th>
+                <th style={cellStyle}>Class</th>
+                <th style={cellStyle}>Date</th>
+                <th style={cellStyle}>Status</th>
+                <th style={cellStyle}>Action</th>
               </tr>
             </thead>
 
@@ -397,13 +374,9 @@ function Attendance() {
                   <td style={cellStyle}>
                     <button
                       onClick={() =>
-                        deleteAttendance(
-                          item.id
-                        )
+                        deleteAttendance(item.id)
                       }
-                      style={
-                        deleteButtonStyle
-                      }
+                      style={deleteButtonStyle}
                     >
                       Delete
                     </button>
