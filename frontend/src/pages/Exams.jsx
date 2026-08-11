@@ -1,7 +1,9 @@
 
 import { useEffect, useState } from "react";
 
-const API = "http://localhost:5000/api/exams";
+const API = "https://student-backend-hxpt.onrender.com/api/exams";
+const CLASSES_API = "https://student-backend-hxpt.onrender.com/api/classes";
+const SUBJECTS_API = "https://student-backend-hxpt.onrender.com/api/subjects";
 
 function Exams() {
   const [exams, setExams] = useState([]);
@@ -27,6 +29,11 @@ function Exams() {
       const response = await fetch(API);
       const result = await response.json();
 
+      if (!response.ok) {
+        setMessage(result.message || "Unable to load exams.");
+        return;
+      }
+
       setExams(result.data || []);
     } catch (error) {
       console.error("Exams error:", error);
@@ -38,29 +45,25 @@ function Exams() {
 
   const fetchClasses = async () => {
     try {
-      const response = await fetch(
-        "http://localhost:5000/api/classes"
-      );
-
+      const response = await fetch(CLASSES_API);
       const result = await response.json();
 
       setClasses(result.data || []);
     } catch (error) {
       console.error("Classes error:", error);
+      setMessage("Unable to load classes.");
     }
   };
 
   const fetchSubjects = async () => {
     try {
-      const response = await fetch(
-        "http://localhost:5000/api/subjects"
-      );
-
+      const response = await fetch(SUBJECTS_API);
       const result = await response.json();
 
       setSubjects(result.data || []);
     } catch (error) {
       console.error("Subjects error:", error);
+      setMessage("Unable to load subjects.");
     }
   };
 
@@ -138,7 +141,9 @@ function Exams() {
       "Are you sure you want to delete this exam?"
     );
 
-    if (!confirmDelete) return;
+    if (!confirmDelete) {
+      return;
+    }
 
     try {
       const response = await fetch(`${API}/${id}`, {
@@ -180,7 +185,6 @@ function Exams() {
         Manage school examinations.
       </p>
 
-      {/* Add Exam */}
       <div
         style={{
           background: "white",
@@ -285,6 +289,7 @@ function Exams() {
             style={{
               marginTop: "15px",
               color: "#1e3a8a",
+              fontWeight: "500",
             }}
           >
             {message}
@@ -292,7 +297,6 @@ function Exams() {
         )}
       </div>
 
-      {/* Exam Table */}
       <div
         style={{
           background: "white",
@@ -333,9 +337,13 @@ function Exams() {
             <tbody>
               {exams.map((exam) => (
                 <tr key={exam.id}>
-                  <td style={cellStyle}>{exam.id}</td>
+                  <td style={cellStyle}>
+                    {exam.id}
+                  </td>
 
-                  <td style={cellStyle}>{exam.name}</td>
+                  <td style={cellStyle}>
+                    {exam.name}
+                  </td>
 
                   <td style={cellStyle}>
                     {exam.class_name || exam.class_id}
