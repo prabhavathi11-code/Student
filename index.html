@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Registration & Management Portal</title>
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Bootstrap Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="d-flex align-items-center min-vh-100 py-5">
+
+  <div class="container">
+    <div class="row justify-content-center text-center">
+      <div class="col-lg-8">
+        <div class="mb-4">
+          <span class="brand-badge fs-4 px-4 py-2 shadow-sm">
+            <i class="bi bi-mortarboard-fill me-2"></i> EduPortal
+          </span>
+        </div>
+        <h1 class="display-5 fw-bold text-dark mb-3">Student Registration & Management System</h1>
+        <p class="lead text-muted mb-5">
+          A secure, complete full-stack portal with Aadhaar PDF document verification, instant multi-filter admin dashboard, and profile management.
+        </p>
+
+        <div class="d-flex justify-content-center gap-3 flex-wrap">
+          <a href="login.html" class="btn btn-primary-custom btn-lg px-4 shadow">
+            <i class="bi bi-box-arrow-in-right me-2"></i> Unified Login
+          </a>
+          <a href="signup.html" class="btn btn-outline-primary btn-lg px-4">
+            <i class="bi bi-person-plus-fill me-2"></i> Student Registration
+          </a>
+        </div>
+
+        <!-- Quick Info Feature Cards -->
+        <div class="row g-4 mt-5 text-start">
+          <div class="col-md-4">
+            <div class="card card-custom p-4 h-100">
+              <div class="fs-2 text-primary mb-2"><i class="bi bi-shield-check"></i></div>
+              <h5 class="fw-bold">Duplicate Email & File Validation</h5>
+              <p class="text-muted small mb-0">Enforces exact duplicate email alerts, PDF-only Aadhaar upload validation, and server-side unique renaming.</p>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card card-custom p-4 h-100">
+              <div class="fs-2 text-success mb-2"><i class="bi bi-funnel"></i></div>
+              <h5 class="fw-bold">Instant Multi-Filter Admin</h5>
+              <p class="text-muted small mb-0">Protected admin dashboard featuring instant real-time filtering by Name, Class, Min Age, and Max Age.</p>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card card-custom p-4 h-100">
+              <div class="fs-2 text-warning mb-2"><i class="bi bi-sliders2-vertical"></i></div>
+              <h5 class="fw-bold">Strict CRUD Security</h5>
+              <p class="text-muted small mb-0">Full CRUD capabilities with Name and Email strictly locked and protected against unauthorized modifications.</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <script src="js/api.js"></script>
+  <script>
+    // Auto-redirect if already logged in
+    document.addEventListener('DOMContentLoaded', () => {
+      const user = API.getSession();
+      if (user) {
+        if (user.role === 'admin') {
+          window.location.href = 'admin-dashboard.html';
+        } else {
+          window.location.href = 'student-dashboard.html';
+        }
+      }
+    });
+  </script>
+</body>
+</html>

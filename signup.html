@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Registration | Portal</title>
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Bootstrap Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="py-4">
+
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-custom fixed-top mb-4">
+    <div class="container">
+      <a class="navbar-brand d-flex align-items-center gap-2" href="index.html">
+        <span class="brand-badge"><i class="bi bi-mortarboard-fill me-1"></i> EduPortal</span>
+        <span class="fw-semibold text-secondary fs-6">Student Registration System</span>
+      </a>
+      <div class="ms-auto d-flex gap-2">
+        <a href="login.html" class="btn btn-outline-primary btn-sm px-3">
+          <i class="bi bi-box-arrow-in-right me-1"></i> Login
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container" style="margin-top: 70px;">
+    <div class="row justify-content-center">
+      <div class="col-lg-9 col-xl-8">
+        <div class="card card-custom">
+          <div class="card-header card-header-custom d-flex justify-content-between align-items-center">
+            <div>
+              <h4 class="mb-1 text-primary fw-bold"><i class="bi bi-person-plus-fill me-2"></i>Student Signup Form</h4>
+              <p class="text-muted small mb-0">Fill in your information to register as a new student</p>
+            </div>
+            <span class="badge bg-primary-subtle text-primary border border-primary-subtle px-3 py-2">
+              Step 1 of 1
+            </span>
+          </div>
+
+          <div class="card-body p-4 p-md-5">
+            <!-- Alert Box for Error / Success -->
+            <div id="alertContainer" class="mb-4 d-none"></div>
+
+            <form id="signupForm" novalidate enctype="multipart/form-data">
+              <!-- Row 1: Name & Email -->
+              <div class="row g-3 mb-3">
+                <div class="col-md-6">
+                  <label for="name" class="form-label">Full Name <span class="text-danger">*</span></label>
+                  <div class="input-group">
+                    <span class="input-group-text bg-light"><i class="bi bi-person"></i></span>
+                    <input type="text" class="form-control" id="name" name="name" placeholder="e.g. Aarav Sharma" required>
+                  </div>
+                  <div class="invalid-feedback">Please enter your full name.</div>
+                </div>
+
+                <div class="col-md-6">
+                  <label for="email" class="form-label">Email Address <span class="text-danger">*</span></label>
+                  <div class="input-group">
+                    <span class="input-group-text bg-light"><i class="bi bi-envelope"></i></span>
+                    <input type="email" class="form-control" id="email" name="email" placeholder="name@example.com" required>
+                  </div>
+                  <div class="invalid-feedback">Please enter a valid email address.</div>
+                </div>
+              </div>
+
+              <!-- Row 2: Password & Date of Birth -->
+              <div class="row g-3 mb-3">
+                <div class="col-md-6">
+                  <label for="password" class="form-label">Password <span class="text-danger">*</span></label>
+                  <div class="input-group">
+                    <span class="input-group-text bg-light"><i class="bi bi-lock"></i></span>
+                    <input type="password" class="form-control" id="password" name="password" placeholder="At least 6 characters" minlength="6" required>
+                    <button class="btn btn-outline-secondary" type="button" id="togglePassword">
+                      <i class="bi bi-eye" id="togglePasswordIcon"></i>
+                    </button>
+                  </div>
+                  <div class="invalid-feedback">Password must be at least 6 characters.</div>
+                </div>
+
+                <div class="col-md-6">
+                  <label for="dob" class="form-label">Date of Birth <span class="text-danger">*</span></label>
+                  <div class="input-group">
+                    <span class="input-group-text bg-light"><i class="bi bi-calendar-event"></i></span>
+                    <input type="date" class="form-control" id="dob" name="dob" max="2026-12-31" required>
+                  </div>
+                  <div class="invalid-feedback">Please select your date of birth.</div>
+                </div>
+              </div>
+
+              <!-- Row 3: Gender (Radio Buttons) -->
+              <div class="mb-3">
+                <label class="form-label d-block">Gender <span class="text-danger">*</span></label>
+                <div class="d-flex gap-4 pt-1">
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" name="gender" id="genderMale" value="Male" required checked>
+                    <label class="form-check-label" for="genderMale">Male</label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" name="gender" id="genderFemale" value="Female">
+                    <label class="form-check-label" for="genderFemale">Female</label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" name="gender" id="genderOther" value="Other">
+                    <label class="form-check-label" for="genderOther">Other</label>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Row 4: Qualification (Dropdown) -->
+              <div class="mb-3">
+                <label for="qualification" class="form-label">Qualification <span class="text-danger">*</span></label>
+                <select class="form-select" id="qualification" name="qualification" required>
+                  <option value="" selected disabled>Select your highest qualification...</option>
+                  <option value="High School">High School (10th)</option>
+                  <option value="Intermediate / 12th">Intermediate / 12th</option>
+                  <option value="Diploma">Diploma</option>
+                  <option value="Bachelor's">Bachelor's Degree (B.Tech / B.Sc / B.A)</option>
+                  <option value="Master's">Master's Degree (M.Tech / M.Sc / M.A)</option>
+                  <option value="Doctorate">Doctorate / Ph.D</option>
+                </select>
+                <div class="invalid-feedback">Please select your qualification.</div>
+              </div>
+
+              <!-- Row 5: Interests (Checkboxes) -->
+              <div class="mb-3">
+                <label class="form-label d-block">Interests (Select all that apply)</label>
+                <div class="row g-2 pt-1">
+                  <div class="col-sm-6 col-md-4">
+                    <div class="form-check">
+                      <input class="form-check-input interest-checkbox" type="checkbox" id="intWeb" value="Web Development">
+                      <label class="form-check-label" for="intWeb">Web Development</label>
+                    </div>
+                  </div>
+                  <div class="col-sm-6 col-md-4">
+                    <div class="form-check">
+                      <input class="form-check-input interest-checkbox" type="checkbox" id="intAI" value="Artificial Intelligence">
+                      <label class="form-check-label" for="intAI">Artificial Intelligence</label>
+                    </div>
+                  </div>
+                  <div class="col-sm-6 col-md-4">
+                    <div class="form-check">
+                      <input class="form-check-input interest-checkbox" type="checkbox" id="intData" value="Data Science">
+                      <label class="form-check-label" for="intData">Data Science</label>
+                    </div>
+                  </div>
+                  <div class="col-sm-6 col-md-4">
+                    <div class="form-check">
+                      <input class="form-check-input interest-checkbox" type="checkbox" id="intCyber" value="Cyber Security">
+                      <label class="form-check-label" for="intCyber">Cyber Security</label>
+                    </div>
+                  </div>
+                  <div class="col-sm-6 col-md-4">
+                    <div class="form-check">
+                      <input class="form-check-input interest-checkbox" type="checkbox" id="intUI" value="UI/UX Design">
+                      <label class="form-check-label" for="intUI">UI/UX Design</label>
+                    </div>
+                  </div>
+                  <div class="col-sm-6 col-md-4">
+                    <div class="form-check">
+                      <input class="form-check-input interest-checkbox" type="checkbox" id="intCloud" value="Cloud Computing">
+                      <label class="form-check-label" for="intCloud">Cloud Computing</label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Row 6: Class, Subject, Marks -->
+              <div class="row g-3 mb-3">
+                <div class="col-md-4">
+                  <label for="class" class="form-label">Class / Grade <span class="text-danger">*</span></label>
+                  <input type="text" class="form-control" id="class" name="class" placeholder="e.g. B.Tech CS 3rd Year" required>
+                  <div class="invalid-feedback">Please enter your class.</div>
+                </div>
+
+                <div class="col-md-4">
+                  <label for="subject" class="form-label">Subject <span class="text-danger">*</span></label>
+                  <input type="text" class="form-control" id="subject" name="subject" placeholder="e.g. Computer Science" required>
+                  <div class="invalid-feedback">Please enter your primary subject.</div>
+                </div>
+
+                <div class="col-md-4">
+                  <label for="marks" class="form-label">Marks / Percentage <span class="text-danger">*</span></label>
+                  <div class="input-group">
+                    <input type="number" class="form-control" id="marks" name="marks" placeholder="0 - 100" min="0" max="100" step="0.1" required>
+                    <span class="input-group-text bg-light">%</span>
+                  </div>
+                  <div class="invalid-feedback">Please enter marks between 0 and 100.</div>
+                </div>
+              </div>
+
+              <!-- Row 7: Aadhaar Document Upload (Strictly PDF) -->
+              <div class="mb-4">
+                <label for="aadhaar" class="form-label">Aadhaar Document Upload (PDF Only) <span class="text-danger">*</span></label>
+                <div class="input-group">
+                  <span class="input-group-text bg-light"><i class="bi bi-file-earmark-pdf text-danger"></i></span>
+                  <input type="file" class="form-control" id="aadhaar" name="aadhaar" accept=".pdf,application/pdf" required>
+                </div>
+                <div class="form-text text-muted">
+                  <i class="bi bi-info-circle me-1"></i> Only PDF files are accepted. The file will be automatically renamed on the server to prevent overwrite.
+                </div>
+                <div id="fileValidationFeedback" class="text-danger small mt-1 d-none">
+                  File validation failed: Please select a valid PDF file.
+                </div>
+              </div>
+
+              <!-- Submit Button -->
+              <div class="d-grid mt-4">
+                <button type="submit" class="btn btn-primary-custom btn-lg" id="submitBtn">
+                  <i class="bi bi-check2-circle me-2"></i> Register Student Account
+                </button>
+              </div>
+
+              <div class="text-center mt-3 text-secondary">
+                Already registered? <a href="login.html" class="fw-semibold text-primary">Login here</a>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/signup.js"></script>
+</body>
+</html>
