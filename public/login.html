@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Unified Login | Student & Admin Portal</title>
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Bootstrap Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="d-flex align-items-center min-vh-100 py-5">
+
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-md-8 col-lg-5 col-xl-4">
+        
+        <div class="text-center mb-4">
+          <div class="d-inline-flex align-items-center gap-2 mb-2">
+            <span class="brand-badge fs-5 px-3 py-2"><i class="bi bi-mortarboard-fill me-1"></i> EduPortal</span>
+          </div>
+          <h4 class="fw-bold text-dark mt-2">Single Sign-On Portal</h4>
+          <p class="text-muted small">One unified login for both Admins and Students</p>
+        </div>
+
+        <div class="card card-custom">
+          <div class="card-body p-4 p-md-4">
+            
+            <!-- Alert Container -->
+            <div id="loginAlert" class="mb-3 d-none"></div>
+
+            <form id="loginForm" novalidate>
+              <div class="mb-3">
+                <label for="loginEmail" class="form-label">Email Address</label>
+                <div class="input-group">
+                  <span class="input-group-text bg-light"><i class="bi bi-envelope"></i></span>
+                  <input type="email" class="form-control" id="loginEmail" placeholder="Enter your email" required autofocus>
+                </div>
+                <div class="invalid-feedback">Please enter a valid email address.</div>
+              </div>
+
+              <div class="mb-3">
+                <div class="d-flex justify-content-between align-items-center">
+                  <label for="loginPassword" class="form-label mb-0">Password</label>
+                  <a href="#" class="small text-decoration-none text-primary" data-bs-toggle="modal" data-bs-target="#forgotPasswordModal">Forgot Password?</a>
+                </div>
+                <div class="input-group mt-1">
+                  <span class="input-group-text bg-light"><i class="bi bi-lock"></i></span>
+                  <input type="password" class="form-control" id="loginPassword" placeholder="Enter password" required>
+                  <button class="btn btn-outline-secondary" type="button" id="toggleLoginPassword">
+                    <i class="bi bi-eye" id="toggleLoginPasswordIcon"></i>
+                  </button>
+                </div>
+                <div class="invalid-feedback">Please enter your password.</div>
+              </div>
+
+              <div class="d-grid mt-4">
+                <button type="submit" class="btn btn-primary-custom" id="loginBtn">
+                  <i class="bi bi-box-arrow-in-right me-1"></i> Sign In
+                </button>
+              </div>
+            </form>
+
+            <div class="text-center mt-3 small text-muted">
+              Don't have an account? <a href="signup.html" class="fw-semibold text-primary">Register as Student</a>
+            </div>
+
+            <!-- Demo Credentials Helper Card -->
+            <div class="demo-box mt-4">
+              <div class="fw-bold mb-1"><i class="bi bi-key-fill me-1"></i> Quick Demo Credentials:</div>
+              <div class="d-flex justify-content-between align-items-center mt-1">
+                <span><strong>Admin:</strong> admin@gmail.com / admin123</span>
+                <button class="btn btn-xs btn-outline-primary py-0 px-2 small" id="fillAdmin">Fill</button>
+              </div>
+              <div class="d-flex justify-content-between align-items-center mt-1">
+                <span><strong>Student:</strong> aarav.sharma@example.com / password123</span>
+                <button class="btn btn-xs btn-outline-primary py-0 px-2 small" id="fillStudent">Fill</button>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="text-center mt-3 text-muted small">
+          &copy; 2026 Student Management System. All rights reserved.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Functional Forgot Password Modal -->
+  <div class="modal fade" id="forgotPasswordModal" tabindex="-1" aria-labelledby="forgotPasswordModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content border-0 shadow-lg" style="border-radius: 14px;">
+        <div class="modal-header bg-light">
+          <h5 class="modal-title fw-bold" id="forgotPasswordModalLabel">
+            <i class="bi bi-shield-lock-fill text-primary me-2"></i>Reset Your Password
+          </h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body p-4">
+          <div id="forgotAlert" class="mb-3 d-none"></div>
+
+          <form id="forgotForm">
+            <div class="mb-3">
+              <label for="forgotEmail" class="form-label">Registered Email Address</label>
+              <div class="input-group">
+                <span class="input-group-text bg-light"><i class="bi bi-envelope"></i></span>
+                <input type="email" class="form-control" id="forgotEmail" placeholder="Enter your registered email" required>
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label for="forgotNewPassword" class="form-label">New Password</label>
+              <div class="input-group">
+                <span class="input-group-text bg-light"><i class="bi bi-key"></i></span>
+                <input type="password" class="form-control" id="forgotNewPassword" placeholder="Enter new password" minlength="6" required>
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label for="forgotConfirmPassword" class="form-label">Confirm New Password</label>
+              <div class="input-group">
+                <span class="input-group-text bg-light"><i class="bi bi-check2"></i></span>
+                <input type="password" class="form-control" id="forgotConfirmPassword" placeholder="Confirm new password" required>
+              </div>
+            </div>
+
+            <div class="d-grid mt-4">
+              <button type="submit" class="btn btn-primary-custom" id="forgotSubmitBtn">
+                <i class="bi bi-arrow-repeat me-1"></i> Update Password
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/login.js"></script>
+</body>
+</html>

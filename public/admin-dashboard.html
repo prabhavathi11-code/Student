@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard | Student Management System</title>
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Bootstrap Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="py-4">
+
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-custom fixed-top mb-4">
+    <div class="container-fluid px-lg-5">
+      <a class="navbar-brand d-flex align-items-center gap-2" href="#">
+        <span class="brand-badge bg-dark"><i class="bi bi-shield-lock-fill me-1"></i> Admin Portal</span>
+        <span class="fw-semibold text-secondary fs-6 d-none d-sm-inline">Student Management System</span>
+      </a>
+      <div class="ms-auto d-flex align-items-center gap-3">
+        <div class="d-flex align-items-center gap-2">
+          <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center" style="width: 36px; height: 36px; font-weight: bold;">
+            A
+          </div>
+          <div class="d-none d-md-block text-start">
+            <div class="fw-bold small" id="adminDisplayName">System Administrator</div>
+            <div class="text-muted" style="font-size: 0.75rem;">admin@gmail.com</div>
+          </div>
+        </div>
+        <button class="btn btn-outline-danger btn-sm px-3" id="logoutBtn">
+          <i class="bi bi-box-arrow-right me-1"></i> Logout
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container-fluid px-lg-5" style="margin-top: 75px;">
+    
+    <!-- Top Stats Row -->
+    <div class="row g-3 mb-4">
+      <div class="col-md-3">
+        <div class="card card-custom p-3 border-start border-4 border-primary">
+          <div class="d-flex justify-content-between align-items-center">
+            <div>
+              <p class="text-muted small mb-1 fw-bold">TOTAL STUDENTS</p>
+              <h3 class="mb-0 fw-bold text-dark" id="statTotalStudents">0</h3>
+            </div>
+            <div class="bg-primary-subtle text-primary p-3 rounded-circle fs-4">
+              <i class="bi bi-people-fill"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-3">
+        <div class="card card-custom p-3 border-start border-4 border-success">
+          <div class="d-flex justify-content-between align-items-center">
+            <div>
+              <p class="text-muted small mb-1 fw-bold">FILTERED RESULTS</p>
+              <h3 class="mb-0 fw-bold text-dark" id="statFilteredStudents">0</h3>
+            </div>
+            <div class="bg-success-subtle text-success p-3 rounded-circle fs-4">
+              <i class="bi bi-funnel-fill"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-3">
+        <div class="card card-custom p-3 border-start border-4 border-info">
+          <div class="d-flex justify-content-between align-items-center">
+            <div>
+              <p class="text-muted small mb-1 fw-bold">ACTIVE CLASSES</p>
+              <h3 class="mb-0 fw-bold text-dark" id="statClasses">0</h3>
+            </div>
+            <div class="bg-info-subtle text-info p-3 rounded-circle fs-4">
+              <i class="bi bi-buildings-fill"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-3">
+        <div class="card card-custom p-3 border-start border-4 border-warning">
+          <div class="d-flex justify-content-between align-items-center">
+            <div>
+              <p class="text-muted small mb-1 fw-bold">AVERAGE MARKS</p>
+              <h3 class="mb-0 fw-bold text-dark" id="statAvgMarks">0%</h3>
+            </div>
+            <div class="bg-warning-subtle text-warning p-3 rounded-circle fs-4">
+              <i class="bi bi-award-fill"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Instant Filter Toolbar -->
+    <div class="filter-card">
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <h6 class="fw-bold mb-0 text-primary">
+          <i class="bi bi-sliders me-2"></i>Instant Student Filters
+        </h6>
+        <button class="btn btn-sm btn-link text-decoration-none text-muted" id="resetFiltersBtn">
+          <i class="bi bi-arrow-counterclockwise me-1"></i> Reset Filters
+        </button>
+      </div>
+
+      <div class="row g-3">
+        <!-- Name Filter -->
+        <div class="col-md-3">
+          <label for="filterName" class="form-label small text-muted">Filter by Student Name</label>
+          <div class="input-group input-group-sm">
+            <span class="input-group-text bg-light"><i class="bi bi-search"></i></span>
+            <input type="text" class="form-control" id="filterName" placeholder="Type name to filter instantly...">
+          </div>
+        </div>
+
+        <!-- Class Filter -->
+        <div class="col-md-3">
+          <label for="filterClass" class="form-label small text-muted">Filter by Class</label>
+          <div class="input-group input-group-sm">
+            <span class="input-group-text bg-light"><i class="bi bi-mortarboard"></i></span>
+            <select class="form-select" id="filterClass">
+              <option value="">All Classes</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Min Age Filter -->
+        <div class="col-md-3">
+          <label for="filterMinAge" class="form-label small text-muted">Minimum Age</label>
+          <div class="input-group input-group-sm">
+            <span class="input-group-text bg-light"><i class="bi bi-calendar-minus"></i></span>
+            <input type="number" class="form-control" id="filterMinAge" placeholder="e.g. 18" min="0" max="100">
+          </div>
+        </div>
+
+        <!-- Max Age Filter -->
+        <div class="col-md-3">
+          <label for="filterMaxAge" class="form-label small text-muted">Maximum Age</label>
+          <div class="input-group input-group-sm">
+            <span class="input-group-text bg-light"><i class="bi bi-calendar-plus"></i></span>
+            <input type="number" class="form-control" id="filterMaxAge" placeholder="e.g. 25" min="0" max="100">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Alert Message Banner -->
+    <div id="adminAlertContainer" class="mb-3 d-none"></div>
+
+    <!-- Main Student Table Card -->
+    <div class="card card-custom">
+      <div class="card-header card-header-custom d-flex justify-content-between align-items-center">
+        <div>
+          <h5 class="fw-bold mb-0 text-dark">
+            <i class="bi bi-table me-2 text-primary"></i>Registered Students Directory
+          </h5>
+          <span class="text-muted small">Real-time listing of all student records</span>
+        </div>
+        <div>
+          <a href="signup.html" target="_blank" class="btn btn-outline-primary btn-sm">
+            <i class="bi bi-person-plus-fill me-1"></i> Register New Student
+          </a>
+        </div>
+      </div>
+
+      <div class="table-responsive">
+        <table class="table table-custom align-middle mb-0">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Student Name</th>
+              <th>Email</th>
+              <th>Age (DOB)</th>
+              <th>Gender</th>
+              <th>Qualification</th>
+              <th>Class</th>
+              <th>Subject & Marks</th>
+              <th>Interests</th>
+              <th>Aadhaar PDF</th>
+              <th class="text-end">CRUD Actions</th>
+            </tr>
+          </thead>
+          <tbody id="studentTableBody">
+            <!-- Populated via JavaScript -->
+            <tr>
+              <td colspan="11" class="text-center py-4">
+                <span class="spinner-border spinner-border-sm me-2 text-primary"></span> Loading records...
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Empty State -->
+      <div id="noResultsState" class="text-center py-5 d-none">
+        <i class="bi bi-search text-muted fs-1 mb-2 d-block"></i>
+        <h6 class="fw-bold text-secondary">No matching student records found</h6>
+        <p class="text-muted small mb-0">Try adjusting your search filters above.</p>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- EDIT STUDENT MODAL (ADMIN) -->
+  <!-- Note: NAME AND EMAIL MUST STAY LOCKED / UNEDITABLE -->
+  <div class="modal fade" id="editStudentModal" tabindex="-1" aria-labelledby="editStudentModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+      <div class="modal-content border-0 shadow-lg" style="border-radius: 16px;">
+        <div class="modal-header bg-light">
+          <div>
+            <h5 class="modal-title fw-bold" id="editStudentModalLabel">
+              <i class="bi bi-pencil-square text-primary me-2"></i>Edit Student Details
+            </h5>
+            <span class="text-muted small">Update student information (Admin controls)</span>
+          </div>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+
+        <form id="editStudentForm">
+          <div class="modal-body p-4">
+            <input type="hidden" id="editStudentId">
+
+            <div class="alert alert-info py-2 small d-flex align-items-center gap-2 mb-3">
+              <i class="bi bi-shield-lock-fill fs-5"></i>
+              <div>
+                <strong>Security Policy Enforced:</strong> <u>Name</u> and <u>Email</u> are permanently locked and cannot be edited by administrators.
+              </div>
+            </div>
+
+            <!-- Row 1: Locked Name & Locked Email -->
+            <div class="row g-3 mb-3">
+              <div class="col-md-6">
+                <label for="editName" class="form-label d-flex justify-content-between align-items-center">
+                  <span>Student Name</span>
+                  <span class="locked-badge"><i class="bi bi-lock-fill"></i> Locked</span>
+                </label>
+                <input type="text" class="form-control locked" id="editName" disabled readonly title="Name is locked and uneditable">
+                <div class="form-text text-muted small">Name cannot be modified by admin.</div>
+              </div>
+
+              <div class="col-md-6">
+                <label for="editEmail" class="form-label d-flex justify-content-between align-items-center">
+                  <span>Email Address</span>
+                  <span class="locked-badge"><i class="bi bi-lock-fill"></i> Locked</span>
+                </label>
+                <input type="email" class="form-control locked" id="editEmail" disabled readonly title="Email is locked and uneditable">
+                <div class="form-text text-muted small">Email cannot be modified by admin.</div>
+              </div>
+            </div>
+
+            <!-- Row 2: Editable DOB & Editable Gender -->
+            <div class="row g-3 mb-3">
+              <div class="col-md-6">
+                <label for="editDob" class="form-label">Date of Birth</label>
+                <input type="date" class="form-control" id="editDob" required>
+              </div>
+
+              <div class="col-md-6">
+                <label class="form-label d-block">Gender</label>
+                <div class="d-flex gap-4 pt-2">
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" name="editGender" id="editGenderMale" value="Male">
+                    <label class="form-check-label" for="editGenderMale">Male</label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" name="editGender" id="editGenderFemale" value="Female">
+                    <label class="form-check-label" for="editGenderFemale">Female</label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" name="editGender" id="editGenderOther" value="Other">
+                    <label class="form-check-label" for="editGenderOther">Other</label>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Row 3: Qualification -->
+            <div class="mb-3">
+              <label for="editQualification" class="form-label">Qualification</label>
+              <select class="form-select" id="editQualification" required>
+                <option value="High School">High School (10th)</option>
+                <option value="Intermediate / 12th">Intermediate / 12th</option>
+                <option value="Diploma">Diploma</option>
+                <option value="Bachelor's">Bachelor's Degree (B.Tech / B.Sc / B.A)</option>
+                <option value="Master's">Master's Degree (M.Tech / M.Sc / M.A)</option>
+                <option value="Doctorate">Doctorate / Ph.D</option>
+              </select>
+            </div>
+
+            <!-- Row 4: Editable Class, Subject, Marks -->
+            <div class="row g-3 mb-3">
+              <div class="col-md-4">
+                <label for="editClass" class="form-label">Class</label>
+                <input type="text" class="form-control" id="editClass" required>
+              </div>
+              <div class="col-md-4">
+                <label for="editSubject" class="form-label">Subject</label>
+                <input type="text" class="form-control" id="editSubject" required>
+              </div>
+              <div class="col-md-4">
+                <label for="editMarks" class="form-label">Marks (%)</label>
+                <input type="number" class="form-control" id="editMarks" min="0" max="100" step="0.1" required>
+              </div>
+            </div>
+
+            <!-- Row 5: Editable Interests -->
+            <div class="mb-3">
+              <label class="form-label d-block">Interests</label>
+              <div class="row g-2 pt-1">
+                <div class="col-md-4">
+                  <div class="form-check">
+                    <input class="form-check-input edit-interest-cb" type="checkbox" id="editIntWeb" value="Web Development">
+                    <label class="form-check-label" for="editIntWeb">Web Development</label>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="form-check">
+                    <input class="form-check-input edit-interest-cb" type="checkbox" id="editIntAI" value="Artificial Intelligence">
+                    <label class="form-check-label" for="editIntAI">Artificial Intelligence</label>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="form-check">
+                    <input class="form-check-input edit-interest-cb" type="checkbox" id="editIntData" value="Data Science">
+                    <label class="form-check-label" for="editIntData">Data Science</label>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="form-check">
+                    <input class="form-check-input edit-interest-cb" type="checkbox" id="editIntCyber" value="Cyber Security">
+                    <label class="form-check-label" for="editIntCyber">Cyber Security</label>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="form-check">
+                    <input class="form-check-input edit-interest-cb" type="checkbox" id="editIntUI" value="UI/UX Design">
+                    <label class="form-check-label" for="editIntUI">UI/UX Design</label>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="form-check">
+                    <input class="form-check-input edit-interest-cb" type="checkbox" id="editIntCloud" value="Cloud Computing">
+                    <label class="form-check-label" for="editIntCloud">Cloud Computing</label>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="modal-footer bg-light">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+            <button type="submit" class="btn btn-primary-custom" id="saveEditBtn">
+              <i class="bi bi-check2-circle me-1"></i> Save Changes
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- DELETE CONFIRMATION MODAL -->
+  <div class="modal fade" id="deleteStudentModal" tabindex="-1" aria-labelledby="deleteStudentModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content border-0 shadow-lg" style="border-radius: 14px;">
+        <div class="modal-header bg-danger text-white">
+          <h5 class="modal-title fw-bold" id="deleteStudentModalLabel">
+            <i class="bi bi-trash3-fill me-2"></i>Confirm Student Deletion
+          </h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body p-4 text-center">
+          <i class="bi bi-exclamation-triangle-fill text-danger fs-1 mb-2 d-block"></i>
+          <h5 class="fw-bold mb-2">Are you sure?</h5>
+          <p class="text-muted mb-0">
+            This will permanently remove student <strong id="deleteStudentName"></strong> (ID: #<span id="deleteStudentId"></span>) and their uploaded Aadhaar file from the database.
+          </p>
+        </div>
+        <div class="modal-footer bg-light justify-content-center">
+          <button type="button" class="btn btn-secondary px-4" data-bs-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-danger px-4" id="confirmDeleteBtn">
+            <i class="bi bi-trash me-1"></i> Delete Record
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- AADHAAR PDF VIEWER MODAL -->
+  <div class="modal fade" id="pdfViewerModal" tabindex="-1" aria-labelledby="pdfViewerModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+      <div class="modal-content border-0 shadow-lg" style="border-radius: 16px;">
+        <div class="modal-header bg-light">
+          <h5 class="modal-title fw-bold" id="pdfViewerModalLabel">
+            <i class="bi bi-file-earmark-pdf-fill text-danger me-2"></i>Aadhaar Document Viewer
+          </h5>
+          <div class="d-flex align-items-center gap-2">
+            <a href="#" target="_blank" id="pdfOpenNewTabBtn" class="btn btn-sm btn-outline-primary">
+              <i class="bi bi-box-arrow-up-right me-1"></i> Open in New Tab
+            </a>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+        </div>
+        <div class="modal-body p-0" style="height: 75vh;">
+          <iframe id="pdfViewerFrame" src="" style="width: 100%; height: 100%; border: none;"></iframe>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- API Client -->
+  <script src="js/api.js"></script>
+  <!-- Admin Controller -->
+  <script src="js/admin.js"></script>
+</body>
+</html>

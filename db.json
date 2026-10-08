@@ -1,0 +1,71 @@
+{
+  "admins": [
+    {
+      "id": 1,
+      "name": "System Admin",
+      "email": "admin@gmail.com",
+      "password": "admin123",
+      "role": "admin"
+    }
+  ],
+  "students": [
+    {
+      "id": 101,
+      "name": "Aarav Sharma",
+      "email": "aarav.sharma@example.com",
+      "password": "password123",
+      "dob": "2004-05-14",
+      "gender": "Male",
+      "qualification": "Bachelor's",
+      "interests": [
+        "Web Development",
+        "Artificial Intelligence"
+      ],
+      "class": "B.Tech CS 3rd Year",
+      "subject": "Computer Science",
+      "marks": 92,
+      "aadhaarPath": "sample-aarav.pdf",
+      "role": "student",
+      "createdAt": "2026-10-08T10:32:49.464Z"
+    },
+    {
+      "id": 102,
+      "name": "Priya Patel",
+      "email": "priya.patel@example.com",
+      "password": "password123",
+      "dob": "2006-08-22",
+      "gender": "Female",
+      "qualification": "Intermediate / 12th",
+      "interests": [
+        "Data Science",
+        "UI/UX Design"
+      ],
+      "class": "Grade 12 Science",
+      "subject": "Mathematics",
+      "marks": 88,
+      "aadhaarPath": "sample-priya.pdf",
+      "role": "student",
+      "createdAt": "2026-10-08T10:32:49.472Z"
+    },
+    {
+      "id": 103,
+      "name": "Rohan Verma",
+      "email": "rohan.verma@example.com",
+      "password": "password123",
+      "dob": "2001-11-03",
+      "gender": "Male",
+      "qualification": "Master's",
+      "interests": [
+        "Cyber Security",
+        "Cloud Computing"
+      ],
+      "class": "M.Tech CSE 1st Year",
+      "subject": "Information Security",
+      "marks": 95,
+      "aadhaarPath": "sample-rohan.pdf",
+      "role": "student",
+      "createdAt": "2026-10-08T10:32:49.472Z"
+    }
+  ],
+  "nextStudentId": 105
+}
