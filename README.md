@@ -138,7 +138,7 @@ To upload this project to your GitHub account (`prabhavathi11-code`):
 1. Go to [GitHub.com](https://github.com/new) and create a new public repository named `student-registration-dashboard`.
 2. Run the following terminal commands:
 ```bash
-git remote add origin https://github.com/prabhavathi11-code/student-registration-dashboard.git
+git remote add origin https://github.com/prabhavathi11-code/Student.git
 git branch -M main
 git push -u origin main
 ```
@@ -151,7 +151,7 @@ git push -u origin main
 1. Push this repository to your GitHub.
 2. Sign up / Log in to [Render.com](https://render.com/).
 3. Click **New +** $\rightarrow$ **Web Service**.
-4. Connect your `student-registration-dashboard` repository.
+4. Connect your `Student` repository (`https://github.com/prabhavathi11-code/Student`).
 5. Set:
    - **Environment:** `Node`
    - **Build Command:** `npm install`
