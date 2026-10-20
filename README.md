@@ -4,7 +4,7 @@
                         
 ---
 
-## 📌 Project Overview & Rubric Compliance
+## 📌 Project Overview & Rubric Compliance 
 
 This application fulfills 100% of the specifications detailed in the **Students Registration Forms Evaluation Guide**:
 
