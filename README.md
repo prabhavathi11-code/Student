@@ -2,7 +2,7 @@
                                                                
 > **Full-Stack Student Management System** built with Node.js, Express, Bootstrap 5, and SQLite/JSON database, complete with client-side localStorage fallback, Aadhaar PDF validation, instant multi-filtering, access control, and full CRUD operations.
                         
----
+---                
 
 ## 📌 Project Overview & Rubric Compliance 
 
